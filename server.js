@@ -43,6 +43,7 @@ app.get('/todo', (req, res) => {
 // Read one (cRud) -- member route
 app.get('/todo/:id', (req, res) => {
   Todo.readOne(req.params.id, (err, todo) => {
+    console.log(todo);
     if (todo) {
       res.status(200).json(todo);
     } else {
