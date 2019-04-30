@@ -11,6 +11,11 @@ exports.create = (text, addTodo) => {
   counter.getNextUniqueId((err, id) => {
     items[id] = text;
     addTodo(null, { id, text }); 
+    fs.writeFile(path.join(__dirname, `${id}.txt`), text, (err) => {
+      if(err) {
+        throw (err);
+      }
+    })
   });
 };
 
