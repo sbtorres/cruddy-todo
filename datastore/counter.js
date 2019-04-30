@@ -44,7 +44,7 @@ exports.getNextUniqueId = (callback) => {
     writeCounter(newCount, (err, counterString) => {
       callback(null, counterString);
     } 
-  )})
+  )});
 };
 
 
