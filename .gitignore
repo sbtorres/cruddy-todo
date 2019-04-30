@@ -1,6 +1,8 @@
 datastore/data/*
 datastore/counter.txt
 test/testData
+package.json
+
 
 ###OSX###
 
