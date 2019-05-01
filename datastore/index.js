@@ -18,18 +18,39 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
-  fs.readdir(exports.dataDir, (err, files) => {
-    if (err) {
-      throw ('could not map director');
-    } else {
-      var returnArray = [];
-      _.map(files, (file) => {
-        returnArray.push({id: file.slice(0, -4), text: file.slice(0, -4)});
-      })
-      callback(null, returnArray);
-    }
-  })  
+  var fileArray = fs.readdirSync(exports.dataDir)
+
+  var promisedArray = fileArray.map((file) => {
+    return new Promise (function (resolve, reject) {
+      fs.readFile(`${exports.dataDir}/${file}`, 'utf-8', (err, text) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve({id: file.slice(0, -4), text: text});
+      }
+    })
+  })
+  })
+
+  Promise.all(promisedArray).then((todos) => {
+    callback(null, todos);
+  })
+
 };
+
+// exports.readAll = (callback) => {
+//   fs.readdir(exports.dataDir, (err, files) => {
+//     if (err) {
+//       throw ('could not map director');
+//     } else {
+//       var returnArray = [];
+//       _.map(files, (file) => {
+//         returnArray.push({id: file.slice(0, -4), text: file.slice(0, -4)});
+//       })
+//       callback(null, returnArray);
+//     }
+//   })  
+// };
 
 exports.readOne = (id, callback) => {
   fs.readFile(`${exports.dataDir}/${id}.txt`, 'utf8', (err, text) => {
